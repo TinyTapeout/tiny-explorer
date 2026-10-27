@@ -51,8 +51,8 @@ struct Cell {
 };
 
 inline bool isFillerCell(const std::string& name) {
-    // IHP sg13g2:
-    if (name.compare(0, 7, "sg13g2_") == 0) {
+    // IHP sg13g2 / sg13cmos5l:
+    if (name.starts_with("sg13g2_") || name.starts_with("sg13cmos5l_")) {
         if (name.find("_fill_") != std::string::npos || name.find("_decap_") != std::string::npos) {
             return true;
         }
@@ -67,7 +67,7 @@ inline bool isFillerCell(const std::string& name) {
 }
 
 inline bool isStandardCell(const std::string& name) {
-    return name.starts_with("sg13g2_") | name.starts_with("sky130_") | name.starts_with("gf180mcu_");
+    return name.starts_with("sg13g2_") | name.starts_with("sg13cmos5l_") | name.starts_with("sky130_") | name.starts_with("gf180mcu_");
 }
 
 inline bool isGroundLabel(const std::string& label) {
@@ -107,6 +107,17 @@ inline const PdkMap& getPdkMaps() {
             {{67, 0}, L_MET4}, {{67,25}, L_MET4}, // labels
             {{125, 0}, L_VIA4},
             {{126, 0}, L_MET5}, {{126, 2}, L_MET5}, {{126, 25}, L_MET5} // labels
+        }},
+        // Same layers as ihp-sg13g2, but without Metal5 / Via4: TopVia1 sits directly on Metal4
+        {"ihp-sg13cmos5l", {
+            {{31, 0}, L_NWELL}, {{ 1, 0}, L_DIFF},
+            {{ 5, 0}, L_POLY}, {{ 6, 0}, L_LICON},
+            {{ 8, 0}, L_LI1},  {{19, 0}, L_MCON},
+            {{ 8, 1}, L_LI1},  {{ 8, 2}, L_LI1}, {{ 8,25}, L_LI1}, // labels
+            {{10, 0}, L_MET1}, {{29, 0}, L_VIA1}, {{10,25}, L_MET1}, // labels
+            {{30, 0}, L_MET2}, {{30, 25}, L_MET2}, {{49, 0}, L_VIA2},
+            {{50, 0}, L_MET3}, {{50, 25}, L_MET3}, {{125, 0}, L_VIA3},
+            {{126, 0}, L_MET4}, {{126, 2}, L_MET4}, {{126, 25}, L_MET4} // labels
         }},
         {"gf180mcuD", {
             {{21, 0}, L_NWELL}, {{22, 0}, L_DIFF},
